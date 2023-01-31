@@ -772,7 +772,6 @@ function gcinclude.Initialize()
 	gcinclude.SetVariables:once(2);
 	gcinclude.SetAlias:once(2);
 	gckeybinds.SetKeybinds:once(2);
-	AshitaCore:GetChatManager():QueueCommand(-1, '/addon load skillchains');
 	
 end
 
