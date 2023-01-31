@@ -46,7 +46,7 @@ local sets = {
     Dt = {
     },
 
-    ['Tp_Default_Priority'] = {
+    Tp_Default_Priority = {
         Main = 'Blessed Hammer',
         Sub = 'Tropical Shield',
         Range = 'Bamboo Fish. Rod',
