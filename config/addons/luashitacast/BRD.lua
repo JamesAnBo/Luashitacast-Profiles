@@ -1,226 +1,77 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
 
 local sets = {
-    Idle = {
-        Main = { Name = 'Kali', AugPath='C' },
-        Sub = 'Genmei Shield',
-        Range = { Name = 'Gjallarhorn', AugTrial=3591 },
-        Head = 'Nyame Helm',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = 'Odnowa Earring +1',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Fili Manchettes +1',
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Back = { Name = 'Intarabus\'s Cape', Augment = { [1] = 'Damage taken-5%', [2] = '"Fast Cast"+10', [3] = 'Mag. Acc.+10', [4] = 'Mag. Acc+20', [5] = 'CHR+20', [6] = 'Magic Damage +20' } },
-        Waist = 'Fucho-no-Obi',
-        Legs = 'Assid. Pants +1',
-        Feet = 'Volte Gaiters',
-    },
-    Resting = {},
+    Idle_Default_Priority = {
+	},
+    Resting_Priority = {
+	},
     Idle_Regen = {
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Ring2 = 'Chirich Ring +1',
-    },
+	},
     Idle_Refresh = {
-
-    },
+	},
+	Idle_Defense = {
+	},
     Town = {
-        Main = { Name = 'Kali', AugPath='C' },
-        Sub = 'Culminus',
-        Range = { Name = 'Gjallarhorn', AugTrial=3591 },
-        Head = 'Brioso Roundlet +2',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Inyanga Jubbah +2',
-        Hands = 'Fili Manchettes +1',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Back = { Name = 'Intarabus\'s Cape', Augment = { [1] = 'Damage taken-5%', [2] = '"Fast Cast"+10', [3] = 'Mag. Acc.+10', [4] = 'Mag. Acc+20', [5] = 'CHR+20', [6] = 'Magic Damage +20' } },
-        Waist = 'Fucho-no-Obi',
-        Legs = 'Brioso Cannions +2',
-        Feet = 'Fili Cothurnes +1',
     },
 
     Dt = {
-        Sub = 'Genmei Shield',
-        Head = 'Nyame Helm',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = { Name = 'Odnowa Earring +1', AugPath='A' },
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',
-        Waist = 'Flume Belt +1',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
     },
 
-    Tp_Default = {
-        Main = 'Naegling',
-        Sub = 'Genmei Shield',
-        Range = { Name = 'Gjallarhorn', AugTrial=3591 },
-        Head = 'Nyame Helm',
-        Neck = { Name = 'Bard\'s Charm +1', AugPath='A' },
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Cessance Earring',
-        Body = { Name = 'Bihu Jstcorps. +3', AugTrial=5481 },
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Petrov Ring',
-        Ring2 = 'Ilabrat Ring',
-        Back = { Name = 'Intarabus\'s Cape', Augment = { [1] = 'Accuracy+20', [2] = '"Store TP"+10', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Nyame Flanchard',
-        Feet = 'Bihu Slippers +3',
+    Tp_Default_Priority = {
     },
     Tp_Hybrid = {
     },
     Tp_Acc = {
-        Ring1 = 'Cacoethic Ring +1',
-        Ring2 = 'Chirich Ring +1',
     },
 
 
     Precast = {
-        Main = { Name = 'Kali', AugPath='C' },
-        Sub = 'Genmei Shield',
-        Range = { Name = 'Gjallarhorn', AugTrial=3591 },
-        Head = 'Haruspex Hat',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = 'Loquac. Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Inyanga Jubbah +2',
-        Hands = { Name = 'Gende. Gages +1', Augment = { [1] = 'Phys. dmg. taken -4%', [2] = 'Song spellcasting time -5%' } },
-        Ring1 = 'Prolix Ring',
-        Ring2 = 'Kishar Ring',
-        Back = { Name = 'Intarabus\'s Cape', Augment = { [1] = 'Damage taken-5%', [2] = '"Fast Cast"+10', [3] = 'Mag. Acc.+10', [4] = 'Mag. Acc+20', [5] = 'CHR+20', [6] = 'Magic Damage +20' } },
-        Waist = 'Embla Sash',
-        Legs = 'Aya. Cosciales +2',
-        Feet = 'Volte Gaiters',
     },
     Cure_Precast = {
-        Ear1 = 'Mendi. Earring',
-        Feet = 'Vanya Clogs',
     },
     Enhancing_Precast = {
-        Waist = 'Siegel Sash',
     },
     Stoneskin_Precast = {
-        Head = 'Umuthi Hat',
-        Waist = 'Siegel Sash',
     },
     Song_Precast = {
-        Main = { Name = 'Kali', AugPath='C' },
-        Sub = 'Genmei Shield',
-        Range = { Name = 'Gjallarhorn', AugTrial=3591 },
-        Head = 'Fili Calot +1',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = 'Loquac. Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Inyanga Jubbah +2',
-        Hands = { Name = 'Gende. Gages +1', Augment = { [1] = 'Phys. dmg. taken -4%', [2] = 'Song spellcasting time -5%' } },
-        Ring1 = 'Defending Ring',
-        Ring2 = 'Kishar Ring',
-        Back = { Name = 'Intarabus\'s Cape', Augment = { [1] = 'Damage taken-5%', [2] = '"Fast Cast"+10', [3] = 'Mag. Acc.+10', [4] = 'Mag. Acc+20', [5] = 'CHR+20', [6] = 'Magic Damage +20' } },
-        Waist = 'Embla Sash',
-        Legs = 'Aya. Cosciales +2',
-        Feet = 'Volte Gaiters',
     },
 
 
     Cure = {--I cap is 50, II cap is 30
-        Main = 'Bunzi\'s Rod',--I 30
-        Sub = 'Ammurapi Shield',
-        Ammo = 'Pemphredo Tathlum',
-        Neck = 'Nodens Gorget',--I 5
-        Ear1 = 'Mendi. Earring',--I 5
-        Ear2 = 'Regal Earring',
-        Hands = 'Telchine Gloves',--I 9
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = 'Aurist\'s Cape +1',
-        Waist = 'Rumination Sash',
-        Feet = 'Vanya Clogs',--I 10
     },
     Self_Cure = {--cap 30
-        Waist = 'Gishdubar Sash',
     },
     Regen = {
-        Main = 'Bolelabunga',
-        Sub = 'Ammurapi Shield',
-        Body = 'Telchine Chas.',
-        Waist = 'Embla Sash',
-        Legs = 'Telchine Braconi',
-        Feet = 'Telchine Pigaches',
     },
     Cursna = {
-        Ring1 = 'Purity Ring',
-		Waist = 'Gishdubar Sash',
-        Feet = 'Vanya Clogs',
     },
 
     Enhancing = {
-        Head = 'Befouled Crown',
-        Neck = 'Incanter\'s Torque',
-        Ear1 = 'Mendi. Earring',
-        Ear2 = 'Andoaa Earring',
-        Body = 'Telchine Chas.',
-        Hands = 'Chironic Gloves',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',
-        Waist = 'Embla Sash',
-        Legs = 'Telchine Braconi',
-        Feet = 'Telchine Pigaches',
     },
     Stoneskin = {
-        Neck = 'Nodens Gorget',
-        Waist = 'Siegel Sash',
     },
     Phalanx = {},
     Refresh = {
-		Waist = 'Gishdubar Sash',
     },
 
-    Enfeebling = { --need update
-        Sub = 'Ammurapi Shield',
-        Head = 'Brioso Roundlet +2',
-        Neck = 'Erra Pendant',
-        Ear1 = 'Regal Earring',
-        Ear2 = 'Gwati Earring',
-        Body = 'Brioso Justau. +2',
-        Hands = 'Brioso Cuffs +2',
-        Ring1 = 'Kishar Ring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = { Name = 'Aurist\'s Cape +1', AugPath='A' },
-        Waist = { Name = 'Acuity Belt +1', AugPath='A' },
-        Legs = 'Brioso Cannions +2',
-        Feet = 'Brioso Slippers +3',
+    Enfeebling = {
     },
 
     Wind = {
-        Main = { Name = 'Kali', AugPath='C' },
-        Sub = 'Ammurapi Shield',
-        Range = { Name = 'Gjallarhorn', AugTrial=3591 },
-        Head = 'Brioso Roundlet +2',
-        Neck = 'Moonbow Whistle',
-        Ear1 = 'Crep. Earring',
-        Ear2 = 'Regal Earring',
-        Body = 'Brioso Justau. +2',
-        Hands = 'Brioso Cuffs +2',
-        Ring1 = 'Crepuscular Ring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = { Name = 'Intarabus\'s Cape', Augment = { [1] = 'Damage taken-5%', [2] = '"Fast Cast"+10', [3] = 'Mag. Acc.+10', [4] = 'Mag. Acc+20', [5] = 'CHR+20', [6] = 'Magic Damage +20' } },
-        Waist = { Name = 'Acuity Belt +1', AugPath='A' },
-        Legs = 'Brioso Cannions +2',
-        Feet = 'Brioso Slippers +3',
     },
     String = { --need update for harps, mostly for Horde Lullaby
         Range = 'Blurred Harp',
@@ -288,18 +139,7 @@ local sets = {
     },
 
     Ws_Default = {
-        Head = 'Nyame Helm',
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Mache Earring +1',
-        Ear2 = 'Telos Earring',
-        Body = 'Bihu Jstcorps. +3',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Petrov Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Intarabus\'s Cape', Augment = { [1] = 'Accuracy+20', [2] = '"Store TP"+10', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Bihu Slippers +3',
+
     },
     Ws_Hybrid = {
     },
@@ -336,6 +176,10 @@ local sets = {
 };
 profile.Sets = sets;
 
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
+
 profile.Packer = {
     --{Name = 'Chonofuda', Quantity = 'all'},
 };
@@ -344,8 +188,6 @@ profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
 
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 5');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 10');
 end
 
 profile.OnUnload = function()
@@ -357,6 +199,12 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+	
     gFunc.EquipSet(sets.Idle);
 	
 	local player = gData.GetPlayer();

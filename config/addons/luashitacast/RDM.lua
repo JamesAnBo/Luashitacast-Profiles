@@ -1,255 +1,90 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
 
 local sets = {
-    Idle = {
-        Main = 'Bolelabunga',
-        Sub = 'Genmei Shield',
-        Range = 'Ullr',
-        Head = 'Malignance Chapeau',
-        Neck = 'Warder\'s Charm +1',
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Atrophy Tabard +2',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',
-        Waist = 'Carrier\'s Sash',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
-    },
-    Resting = {},
+    Idle_Default_Priority = {
+	},
+    Resting_Priority = {
+	},
     Idle_Regen = {
-        Head = 'Befouled Crown',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Ring2 = 'Chirich Ring +1',
-    },
+	},
     Idle_Refresh = {
-        Head = 'Viti. Chapeau +2',
-        Body = 'Atrophy Tabard +2',
-        Feet = 'Volte Gaiters',
-    },
+	},
+	Idle_Defense = {
+	},
     Town = {
-        Main = 'Excalibur',
-        Sub = 'Genmei Shield',
-        Range = 'Ullr',
-        Head = 'Atro. Chapeau +1',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Viti. Tabard +3',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = { Name = 'Carmine Cuisses +1', AugPath='D' },
-        Feet = 'Volte Gaiters',
     },
 
     Dt = {
-        Sub = 'Genmei Shield',
-        Ammo = 'Staunch Tathlum',
-        Head = 'Malignance Chapeau',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = { Name = 'Odnowa Earring +1', AugPath='A' },
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',
-        Waist = 'Flume Belt +1',
-        Legs = { Name = 'Carmine Cuisses +1', AugPath='D' },
-        Feet = 'Nyame Sollerets',
     },
 
-    Tp_Default = {
-        Main = 'Excalibur',
-        Sub = 'Genmei Shield',
-        Ammo = 'Coiste Bodhar',
-        Head = 'Malignance Chapeau',
-        Neck = 'Anu Torque',
-        Ear1 = 'Sherida Earring',
-        Ear2 = 'Telos Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Ilabrat Ring',
-        Ring2 = 'Petrov Ring',
-        Back = { Name = 'Sucellos\'s Cape', Augment = { [1] = 'Accuracy+20', [2] = 'Attack+20', [3] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Carmine Cuisses +1',
-        Feet = 'Nyame Sollerets',
+    Tp_Default_Priority = {
     },
     Tp_Hybrid = {
-        Ring1 = 'Defending Ring',
     },
     Tp_Acc = {
-        Ring1 = 'Cacoethic Ring +1',
-        Ring2 = 'Chirich Ring +1',
     },
 
 
-    Precast = {--30 from traits, 53 from gear
-        Head = 'Atro. Chapeau +1',--12
-        Neck = 'Baetyl Pendant',--4
-        Ear1 = 'Etiolation Earring',--1
-        Ear2 = 'Malignance Earring',--4
-        Body = 'Viti. Tabard +3',--15
-        Ring1 = 'Kishar Ring',--4
-        Ring2 = 'Prolix Ring',--2
-        Waist = 'Embla Sash',--5
-        Legs = { Name = 'Carmine Cuisses +1', AugPath='D' },--SIR
-        Feet = 'Volte Gaiters',--6
+    Precast = {
     },
     Cure_Precast = {
-        Ear1 = 'Mendi. Earring',
-        Feet = 'Vanya Clogs',
     },
     Enhancing_Precast = {
-        Waist = 'Siegel Sash',
     },
     Stoneskin_Precast = {
-        Head = 'Umuthi Hat',
-        Waist = 'Siegel Sash',
     },
 
 
     Cure = {--I cap is 50, II cap is 30
-        Main = 'Bunzi\'s Rod',--I 30
-        Sub = 'Ammurapi Shield',
-        Ammo = 'Pemphredo Tathlum',
-        Neck = 'Nodens Gorget',--I 5
-        Ear1 = 'Mendi. Earring',--I 5
-        Ear2 = 'Regal Earring',
-        Hands = 'Telchine Gloves',--I 9
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',--I 7
-        Waist = 'Rumination Sash',
-        Legs = 'Atrophy Tights +1',--I 10 and skill
-        Feet = { Name = 'Medium\'s Sabots', Augment = { [1] = 'MND+6', [2] = '"Conserve MP"+5', [3] = 'MP+40', [4] = '"Cure" potency +3%' } },
     },
     Self_Cure = {--cap 30
-        Waist = 'Gishdubar Sash',
     },
     Regen = {
-        Main = 'Bolelabunga',
-        Sub = 'Ammurapi Shield',
-        Body = 'Viti. Tabard +3',
     },
     Cursna = {
-        Ring1 = 'Purity Ring',
-		Waist = 'Gishdubar Sash',
     },
 
     Enhancing = {
-        Main = 'Sakpata\'s Sword',
-        Sub = 'Ammurapi Shield',
-        Ammo = 'Pemphredo Tathlum',
-        Head = 'Befouled Crown',
-        Neck = 'Dls. Torque +1',
-        Ear1 = 'Mendi. Earring',
-        Ear2 = 'Andoaa Earring',
-        Body = 'Viti. Tabard +3',
-        Hands = 'Atrophy Gloves +2',
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = { Name = 'Sucellos\'s Cape', Augment = { [1] = 'Accuracy+20', [2] = 'Attack+20', [3] = 'DEX+20' } },
-        Waist = 'Embla Sash',
-        Legs = 'Telchine Braconi',
-        Feet = 'Leth. Houseaux +1',
     },
     Self_Enhancing = {},
     Skill_Enhancing = {},
     Stoneskin = {
-        Neck = 'Nodens Gorget',
-        Waist = 'Siegel Sash',
     },
     Phalanx = {},
     Refresh = {
-        Body = 'Atrophy Tabard +2',
-		Waist = 'Gishdubar Sash',
     },
     Self_Refresh = {},
 
     Enfeebling = {
-        Main = 'Bunzi\'s Rod',
-        Sub = 'Ammurapi Shield',
-        Range = 'Ullr',
-        Head = 'Viti. Chapeau +2',
-        Neck = 'Dls. Torque +1',
-        Ear1 = 'Snotra Earring',
-        Ear2 = 'Malignance Earring',
-        Body = 'Lethargy Sayon +1',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Kishar Ring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = { Name = 'Aurist\'s Cape +1', AugPath='A' },
-        Waist = { Name = 'Acuity Belt +1', AugPath='A' },
-        Legs = 'Nyame Flanchard',
-        Feet = { Name = 'Medium\'s Sabots', Augment = { [1] = 'MND+6', [2] = '"Conserve MP"+5', [3] = 'MP+40', [4] = '"Cure" potency +3%' } },
     },
     EnfeeblingACC = {
-        Ear1 = 'Snotra Earring',
-        Ear2 = 'Regal Earring',
-        Body = 'Atrophy Tabard +2',
-        Hands = 'Atrophy Gloves +2',
-        Ring1 = 'Stikini Ring +1',
     },
     Mind_Enfeebling = {
-        Ring1 = 'Stikini Ring +1',
     },
     Int_Enfeebling = {},
     Potency_Enfeebling = {},
 
     Drain = {
-        Main = 'Bunzi\'s Rod',
-        Sub = 'Ammurapi Shield',
-        Range = 'Ullr',
-        Head = 'Viti. Chapeau +2',
-        Neck = 'Erra Pendant',
-        Ear1 = 'Regal Earring',
-        Ear2 = 'Malignance Earring',
-        Body = 'Atrophy Tabard +2',
-        Hands = 'Atrophy Gloves +2',
-        Ring1 = 'Kishar Ring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = { Name = 'Aurist\'s Cape +1', AugPath='A' },
-        Waist = 'Fucho-no-Obi',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Amalric Nails +1',
     },
 
     Nuke = {
-        Main = 'Marin Staff +1',
-        Sub = 'Enki Strap',
-        Ammo = 'Pemphredo Tathlum',
-        Head = 'Jhakri Coronal +2',
-        Neck = 'Baetyl Pendant',
-        Ear1 = 'Regal Earring',
-        Ear2 = 'Malignance Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Amalric Gages +1',
-        Ring1 = 'Shiva Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = 'Aurist\'s Cape +1',
-        Waist = { Name = 'Acuity Belt +1', AugPath='A' },
-        Legs = 'Amalric Slops +1',
-        Feet = 'Amalric Nails +1',
     },
     NukeACC = {};
     Burst = {
-        Main = 'Bunzi\'s Rod', -- 10 and 0
-        Sub = 'Ammurapi Shield',
-        Head = 'Ea Hat', -- 6 and 6
-        Body = 'Ea Houppelande', -- 8 and 8
-        Hands = 'Amalric Gages +1', -- 0 and 6
-        Ring1 = 'Mujin Band', -- 0 and 5
-        Feet = 'Ea Pigaches', -- 4 and 4
     },
     Helix = {},
     Mp_Body = {Body = 'Seidr Cotehardie',},
@@ -257,24 +92,9 @@ local sets = {
     Preshot = {
     },
     Midshot = {
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Crep. Earring',
     },
 
     Ws_Default = {
-        Ammo = 'Voluspa Tathlum',
-        Head = 'Viti. Chapeau +2',
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Ilabrat Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = 'Solemnity Cape',
-        Waist = 'Fotia Belt',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Thereoid Greaves',
     },
     Ws_Hybrid = {
     },
@@ -282,37 +102,11 @@ local sets = {
     },
 
     Savage_Default = {
-        Ammo = 'Voluspa Tathlum',
-        Head = 'Viti. Chapeau +2',
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Digni. Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Atrophy Gloves +2',
-        Ring1 = 'Petrov Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = 'Solemnity Cape',
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Nyame Flanchard',
-        Feet = 'Thereoid Greaves',
     },
     Savage_Hybrid = {},
     Savage_Acc = {},
 
     Chant_Default = {
-        Ammo = 'Voluspa Tathlum',
-        Head = { Name = 'Blistering Sallet +1', AugPath='A' },
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Petrov Ring',
-        Ring2 = 'Begrudging Ring',
-        Back = 'Solemnity Cape',
-        Waist = 'Fotia Belt',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Thereoid Greaves',
     },
     Chant_Hybrid = {},
     Chant_Acc = {},
@@ -330,6 +124,10 @@ local sets = {
 };
 profile.Sets = sets;
 
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
+
 profile.Packer = {
     {Name = 'Tropical Crepe', Quantity = 'all'},
     {Name = 'Rolan. Daifuku', Quantity = 'all'},
@@ -339,12 +137,11 @@ profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
 
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 1');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 10');
 end
 
 profile.OnUnload = function()
     gcinclude.Unload();
+
 end
 
 profile.HandleCommand = function(args)
@@ -352,9 +149,17 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gFunc.EquipSet(sets.Idle);
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+	
+    gFunc.EquipSet(sets.Idle_Default);
 	
 	local player = gData.GetPlayer();
+	
+	if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
     if (player.Status == 'Engaged') then
         gFunc.EquipSet(sets.Tp_Default)
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then

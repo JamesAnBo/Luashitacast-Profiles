@@ -1,192 +1,89 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
 
 local sets = {
-    Idle = {
-        Ammo = 'Yamarang',
-        Head = 'Mpaca\'s Cap',
-        Neck = 'Warder\'s Charm +1',
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Infused Earring',
-        Body = 'Malignance Tabard',
-        Hands = 'Macabre Gaunt. +1',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Damage taken-5%', [2] = '"Dbl.Atk."+10', [3] = 'Accuracy+20', [4] = 'Attack+20', [5] = 'DEX+20' } },
-        Waist = 'Carrier\'s Sash',
-        Legs = 'Mpaca\'s Hose',
-        Feet = 'Mpaca\'s Boots',
-    },
-    Resting = {},
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
+
+    Idle_Default_Priority = {
+		Main = { 'Shinobi-Gatana', 'Wakizashi' },
+		Sub = { 'Beestinger', },
+		Neck = { 'Wing Pendant', },
+		Ear1 = { 'Beetle Earring +1', 'Bone Earring' },
+		Ear2 = { 'Beetle Earring +1', 'Bone Earring' },
+		Head = { 'Lizard Helm','Hachimaki' },
+		Body = { 'Lizard Jerkin', 'Leather Vest' },
+		Hands = { 'Lizard Gloves', 'Dream Mitts +1' },
+		Ring1 = { 'Balance Ring', },
+		Ring2 = { 'Bastokan Ring', },
+		Waist = { 'Brave Belt', 'Friar\'s Rope' },
+		Legs = { 'Lizard Trousers', 'Sitabaki' },
+		Feet = { 'Lizard Ledelsens', 'Ryl.Ftm. Boots' },
+	},
+    Resting_Priority = {
+	},
     Idle_Regen = {
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Body = 'Hiza. Haramaki +2',
-        Hands = 'Rao Kote',
-        Ring2 = 'Chirich Ring +1',
-    },
-    Idle_Refresh = {},
+	},
+    Idle_Refresh= {
+	},
+	Idle_Defense = {
+	},
     Town = {
-        Main = 'Kikoku',
-        Sub = 'Tauret',
-        Ammo = 'Yamarang',
-        Head = 'Mochi. Hatsuburi +2',
-        Body = 'Mpaca\'s Doublet',
-        Hands = 'Mpaca\'s Gloves',
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Damage taken-5%', [2] = '"Dbl.Atk."+10', [3] = 'Accuracy+20', [4] = 'Attack+20', [5] = 'DEX+20' } },
-        Waist = 'Flume Belt +1',
-        Legs = 'Mpaca\'s Hose',
-        Feet = 'Danzo Sune-Ate',
+
     },
 
-    Dt = {
-        Ammo = 'Yamarang',
-        Head = 'Malignance Chapeau',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = { Name = 'Odnowa Earring +1', AugPath='A' },
-        Ear2 = 'Etiolation Earring',
-        Body = 'Mpaca\'s Doublet',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Damage taken-5%', [2] = '"Dbl.Atk."+10', [3] = 'Accuracy+20', [4] = 'Attack+20', [5] = 'DEX+20' } },
-        Waist = 'Flume Belt +1',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
+    Dt_Priority = {
+
     },
 
-    Tp_Default = {
-        Ammo = 'Date Shuriken',
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = { Name = 'Ninja Nodowa +1', AugPath='A' },
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Telos Earring',
-        Body = 'Hiza. Haramaki +2',
-        Hands = { Name = 'Adhemar Wrist. +1', AugPath='B' },
-        Ring1 = 'Gere Ring',
-        Ring2 = 'Epona\'s Ring',
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Damage taken-5%', [2] = '"Dbl.Atk."+10', [3] = 'Accuracy+20', [4] = 'Attack+20', [5] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = { Name = 'Tatena. Haidate +1', AugPath='A' },
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+20', [2] = 'Attack+6', [3] = 'AGI+1', [4] = '"Triple Atk."+3' } },
+    Tp_Default_Priority = {
     },
     Tp_Hybrid = {
-        Head = 'Mpaca\'s Cap',
-        Body = 'Mpaca\'s Doublet',
-        Hands = 'Mpaca\'s Gloves',
-        Legs = 'Mpaca\'s Hose',
-        Feet = 'Mpaca\'s Boots',
+
     },
     Tp_Acc = {
-        Head = 'Malignance Chapeau',
-        Ear1 = 'Odr Earring',
-        Ear2 = 'Telos Earring',
-        Body = 'Mpaca\'s Doublet',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Cacoethic Ring +1',
-        Ring2 = 'Chirich Ring +1',
-        Legs = { Name = 'Tatena. Haidate +1', AugPath='A' },
-        Feet = 'Tatena. Sune. +1',
+
     },
     Tp_Proc = { -- a set to force low dmg for things like Abyssea
-        Ammo = { Name = 'Coiste Bodhar', AugPath='A' },
-        Head = 'Rawhide Mask',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Cessance Earring',
-        Body = 'Emet Harness +1',
-        Hands = 'Tatena. Gote +1',
-        Ring1 = 'Petrov Ring',
-        Ring2 = 'Epona\'s Ring',
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Damage taken-5%', [2] = '"Dbl.Atk."+10', [3] = 'Accuracy+20', [4] = 'Attack+20', [5] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = { Name = 'Tatena. Haidate +1', AugPath='A' },
-        Feet = 'Tatena. Sune. +1',
+
     },
 
 
     Precast = {
-        Ammo = 'Sapience Orb',
-        Neck = 'Baetyl Pendant',
-        Ear1 = 'Loquac. Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Taeon Tabard',
-        Hands = 'Leyline Gloves',
-        Ring1 = 'Prolix Ring',
-        Ring2 = 'Kishar Ring',
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Magic Damage +20', [2] = 'Mag. Acc+20', [3] = '"Fast Cast"+10', [4] = 'INT+20' } },
-        Waist = 'Audumbla Sash',
-        Feet = 'Taeon Boots',
+
     },
 
 
     Utsu = {
-        Ammo = 'Staunch Tathlum',--sir10
-        Head = 'Malignance Chapeau',
-        Neck = 'Moonlight Necklace',--sir15
-        Body = 'Malignance Tabard',
-        Hands = 'Rawhide Gloves',--sir15
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Damage taken-5%', [2] = '"Dbl.Atk."+10', [3] = 'Accuracy+20', [4] = 'Attack+20', [5] = 'DEX+20' } },
-        Waist = 'Audumbla Sash',--sir10
-        Legs = 'Nyame Flanchard',
-        Feet = 'Hattori Kyahan +1',
+
     },
     Nuke = {
-        Ammo = 'Ghastly Tathlum +1',
-        Head = 'Mochi. Hatsuburi +2',
-        Neck = 'Baetyl Pendant',
-        Ear1 = 'Friomisi Earring',
-        Ear2 = 'Crematio Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Hattori Tekko +1',
-        Ring1 = 'Dingir Ring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Magic Damage +20', [2] = 'Mag. Acc+20', [3] = '"Fast Cast"+10', [4] = 'INT+20' } },
-        Waist = 'Eschan Stone',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Hachi. Kyahan +1',
+
     },
     Macc = {
-        Ammo = 'Staunch Tathlum',
-        Head = 'Mochi. Hatsuburi +2',
-        Neck = 'Sanctity Necklace',
-        Ear1 = 'Crep. Earring',
-        Ear2 = 'Digni. Earring',
-        Body = 'Malignance Tabard',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Magic Damage +20', [2] = 'Mag. Acc+20', [3] = '"Fast Cast"+10', [4] = 'INT+20' } },
-        Waist = 'Eschan Stone',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
+
     },
 
-    Preshot = {
+    Preshot= {
     },
     Midshot = {
-        Neck = 'Iskur Gorget',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Crep. Earring',
+
     },
 
     Ws_Default = {
-        Ammo = 'Date Shuriken',
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = { Name = 'Ninja Nodowa +1', AugPath='A' },
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Digni. Earring',
-        Body = 'Hiza. Haramaki +2',
-        Hands = { Name = 'Adhemar Wrist. +1', AugPath='B' },
-        Ring1 = 'Beithir Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = 'Weapon skill damage +10%', [3] = 'AGI+20', [4] = 'Attack+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Hiza. Hizayoroi +2',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+30', [2] = 'Weapon skill damage +8%', [3] = 'Attack+6', [4] = 'Mag. Acc.+2' } },
     },
-    Ws_Hybrid = {
+    Ws_Hybrid= {
     },
     Ws_Acc = {
     },
@@ -194,90 +91,44 @@ local sets = {
     },
 
     Hi_Default = {
-        Ammo = 'Voluspa Tathlum',
-        Head = 'Adhemar Bonnet +1',
-        Neck = { Name = 'Ninja Nodowa +1', AugPath='A' },
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Odr Earring',
-        Body = 'Mpaca\'s Doublet',
-        Hands = 'Ryuo Tekko',
-        Ring1 = 'Begrudging Ring',
-        Ring2 = 'Epona\'s Ring',
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = 'Weapon skill damage +10%', [3] = 'AGI+20', [4] = 'Attack+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Mpaca\'s Hose',
-        Feet = 'Mpaca\'s Boots',
+
     },
     Hi_Hybrid = {},
     Hi_Acc = {},
 
     Metsu_Default = {
-        Ammo = 'Voluspa Tathlum',
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = { Name = 'Ninja Nodowa +1', AugPath='A' },
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Odr Earring',
-        Body = 'Hiza. Haramaki +2',
-        Hands = { Name = 'Adhemar Wrist. +1', AugPath='B' },
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = 'Weapon skill damage +10%', [3] = 'AGI+20', [4] = 'Attack+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Hiza. Hizayoroi +2',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+30', [2] = 'Weapon skill damage +8%', [3] = 'Attack+6', [4] = 'Mag. Acc.+2' } },
+
     },
     Metsu_Hybrid = {},
     Metsu_Acc = {},
 
     Shun_Default = {
-        Ammo = 'Date Shuriken',
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Odr Earring',
-        Ear2 = 'Lugra Earring +1',
-        Body = 'Nyame Mail',
-        Hands = { Name = 'Adhemar Wrist. +1', AugPath='B' },
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = 'Weapon skill damage +10%', [3] = 'AGI+20', [4] = 'Attack+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Hiza. Hizayoroi +2',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+30', [2] = 'Weapon skill damage +8%', [3] = 'Attack+6', [4] = 'Mag. Acc.+2' } },
+
     },
     Shun_Hybrid = {},
     Shun_Acc = {},
 
     Enmity = {
-        Ammo = 'Date Shuriken',
-        Head = 'Mpaca\'s Cap',
-        Neck = 'Moonlight Necklace',
-        Ear1 = { Name = 'Odnowa Earring +1', AugPath='A' },
-        Ear2 = 'Etiolation Earring',
-        Body = 'Hiza. Haramaki +2',
-        Hands = 'Macabre Gaunt. +1',
-        Ring1 = 'Eihwaz Ring',
-        Ring2 = 'Supershear Ring',
-        Back = { Name = 'Andartia\'s Mantle', Augment = { [1] = 'Damage taken-5%', [2] = '"Dbl.Atk."+10', [3] = 'Accuracy+20', [4] = 'Attack+20', [5] = 'DEX+20' } },
-        Waist = 'Flume Belt +1',
-        Feet = 'Danzo Sune-Ate',
+
     },
 
     TH = {
-        Ammo = 'Per. Lucky Egg',
-		Waist = 'Chaac Belt',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Potency of "Cure" effect received+5%', [2] = 'Mag. Acc.+19', [3] = 'Accuracy+21', [4] = '"Mag. Atk. Bns."+19', [5] = '"Treasure Hunter"+2' } },
+
 	},
     Movement = {
-        Feet = 'Danzo Sune-Ate',
 	},
     Movement_Night = {
-        Feet = 'Hachi. Kyahan +1',
+        Feet = 'Ninja Kyahan',
 	},
     Extra = {--weapons that are for procing that are in storage slips
-        Main = 'Levin',
-        Main = 'Burrower\'s Wand',
-        Main = 'Qutrub Knife',
-        Main = 'Twinned Blade',
-        Main = 'Iapetus',
+
     },
 };
 profile.Sets = sets;
+
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
 
 profile.Packer = {
     {Name = 'Toolbag (Ino)', Quantity = 'all'},
@@ -296,12 +147,11 @@ profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
 
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 4');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 3');
 end
 
 profile.OnUnload = function()
     gcinclude.Unload();
+
 end
 
 profile.HandleCommand = function(args)
@@ -309,11 +159,18 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gFunc.EquipSet(sets.Idle);
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+	
+    gFunc.EquipSet(sets.Idle_Default);
     local game = gData.GetEnvironment();
 	
 	local player = gData.GetPlayer();
     
+	if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
     if (player.Status == 'Engaged') then
         gFunc.EquipSet(sets.Tp_Default);
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then 
@@ -329,7 +186,6 @@ profile.HandleDefault = function()
             gFunc.EquipSet(sets.Movement);
         end
     end
-	
     gcinclude.CheckDefault ();
     if (gcdisplay.GetToggle('DTset') == true) then gFunc.EquipSet(sets.Dt) end;
     if (gcdisplay.GetToggle('Kite') == true) then

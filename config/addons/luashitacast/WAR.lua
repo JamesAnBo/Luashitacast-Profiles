@@ -1,229 +1,125 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
 
 local sets = {
-    Idle = {
-        Ammo = { Name = 'Coiste Bodhar', AugPath='A' },
-        Head = 'Valorous Mask',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Cessance Earring',
-        Body = 'Hjarrandi Breast.',
-        Hands = 'Volte Moufles',
-        Ring1 = 'Defending Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Cichol\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = '"Dbl.Atk."+10', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Sakpata\'s Cuisses',
-        Feet = 'Nyame Sollerets',
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
+
+    Idle_Default_Priority = {
+        Head = { 'Centurion\'s Visor', },
+        Neck = { 'Spike Necklace', },
+        Ear1 = { 'Beetle Earring +1', },
+        Ear2 = { 'Beetle Earring +1', },
+        Body = { 'Ctr. Scale Mail', },
+        Hands = { 'Custom M Gloves', },
+        Ring1 = { 'Balance Ring', },
+        Ring2 = { 'Bastokan Ring', },
+        Back = { 'Rabbit Mantle', },
+        Waist = { 'Pilferer\'s Belt', },
+        Legs = { 'Republic Subligar', },
+        Feet = { 'Ctr. Greaves', },
     },
-    Resting = {},
+    Resting_Priority = {
+	},
     Idle_Regen = {
-        Head = 'Crepuscular Helm',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Hands = 'Volte Moufles',
-        Ring2 = 'Chirich Ring +1',
-    },
+	},
     Idle_Refresh = {
-        Ring1 = 'Stikini Ring +1',
-    },
+	},
+	Idle_Defense = {
+	},
     Town = {
-        Main = 'Naegling',
-        Sub = 'Blurred Shield +1',
-        Ammo = { Name = 'Coiste Bodhar', AugPath='A' },
-        Head = 'Hjarrandi Helm',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Cessance Earring',
-        Body = 'Hjarrandi Breast.',
-        Hands = 'Volte Moufles',
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = 'Chirich Ring +1',
-        Back = { Name = 'Cichol\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = '"Dbl.Atk."+10', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Sakpata\'s Cuisses',
-        Feet = 'Hermes\' Sandals',
     },
 
     Dt = {
-        Ammo = 'Staunch Tathlum',
-        Head = 'Nyame Helm',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = { Name = 'Odnowa Earring +1', AugPath='A' },
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Volte Moufles',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',
-        Waist = 'Flume Belt +1',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
     },
 
-    Tp_Default = {
-        Ammo = { Name = 'Coiste Bodhar', AugPath='A' },
-        Head = 'Flam. Zucchetto +2',
-        Neck = 'War. Beads +1',
-        Ear1 = 'Brutal Earring',
-        Ear2 = 'Cessance Earring',
-        Body = 'Flamma Korazin +2',
-        Hands = 'Sulev. Gauntlets +2',
-        Ring1 = 'Niqmaddu Ring',
-        Ring2 = 'Chirich Ring +1',
-        Back = { Name = 'Cichol\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = '"Dbl.Atk."+10', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Sakpata\'s Cuisses',
-        Feet = 'Tatena. Sune. +1',
+    Tp_Default_Priority = {
+        Head = { 'Centurion\'s Visor', },
+        Neck = { 'Spike Necklace', },
+        Ear1 = { 'Beetle Earring +1', },
+        Ear2 = { 'Beetle Earring +1', },
+        Body = { 'Ctr. Scale Mail', },
+        Hands = { 'Custom M Gloves', },
+        Ring1 = { 'Balance Ring', },
+        Ring2 = { 'Bastokan Ring', },
+        Back = { 'Rabbit Mantle', },
+        Waist = { 'Pilferer\'s Belt', },
+        Legs = { 'Republic Subligar', },
+        Feet = { 'Ctr. Greaves', },
     },
     Tp_Hybrid = {
-        Ammo = 'Staunch Tathlum',
-        Body = 'Hjarrandi Breast.',
-        Hands = 'Sakpata\'s Gauntlets',
     },
     Tp_Acc = {
-        Ammo = 'Seeth. Bomblet +1',
-        Hands = 'Tatena. Gote +1',
-        Ring1 = 'Cacoethic Ring +1',
-        Ring2 = 'Chirich Ring +1',
-        Legs = 'Tatena. Haidate +1',
-        Waist = 'Ioskeha Belt +1',
     },
 
 
     Precast = {
-        Neck = 'Baetyl Pendant',
-        Ear2 = 'Etiolation Earring',
-        Ring1 = 'Prolix Ring',
-        Feet = 'Odyssean Greaves',
     },
 
 
     Cure = {
-        Ammo = 'Pemphredo Tathlum',
-        Neck = 'Incanter\'s Torque',
-        Ear1 = 'Mendi. Earring',
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Back = 'Solemnity Cape',
-        Feet = 'Odyssean Greaves',
     },
 
     Enhancing = {
-        Ammo = 'Pemphredo Tathlum',
-        Neck = 'Incanter\'s Torque',
-        Ear1 = 'Mendi. Earring',
-        Ear2 = 'Andoaa Earring',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
     },
 
     Enfeebling = {
-        Ammo = 'Pemphredo Tathlum',
-        Neck = 'Erra Pendant',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
     },
     Macc = {},
 
     Drain = {
-        Neck = 'Erra Pendant',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
     },
 
     Nuke = {
-        Ammo = 'Pemphredo Tathlum',
-        Head = 'Nyame Helm',
-        Neck = 'Baetyl Pendant',
-        Ear1 = 'Crematio Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Shiva Ring +1',
-        Ring2 = { Name = 'Metamor. Ring +1', AugPath='A' },
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
     },
 
     Preshot = {
     },
     Midshot = {
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Crep. Earring',
     },
 
     Ws_Default = {
-        Ammo = 'Knobkierrie',
-        Head = { Name = 'Valorous Mask', Augment = { [1] = 'Attack+16', [2] = 'Weapon skill damage +10%', [3] = 'Accuracy+16', [4] = 'Pet: Mag. Acc.+1', [5] = 'Pet: STR+4' } },
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Thrud Earring',
-        Ear2 = 'Schere Earring',
-        Body = 'Hjarrandi Breast.',
-        Hands = 'Valorous Mitts',
-        Ring1 = 'Beithir Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Cichol\'s Mantle', Augment = { [1] = 'STR+20', [2] = 'Weapon skill damage +10%', [3] = 'Attack+20', [4] = 'Accuracy+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Sakpata\'s Cuisses',
-        Feet = 'Valorous Greaves',
+        Head = 'Centurion\'s Visor',
+        Neck = 'Spike Necklace',
+        Ear1 = 'Beetle Earring +1',
+        Ear2 = 'Beetle Earring +1',
+        Body = 'Ctr. Scale Mail',
+        Hands = 'Custom M Gloves',
+        Ring1 = 'Balance Ring',
+        Ring2 = 'Bastokan Ring',
+        Back = 'Rabbit Mantle',
+        Waist = 'Brave Belt',
+        Legs = 'Republic Subligar',
+        Feet = 'Ctr. Greaves',
     },
     Ws_Hybrid = {
-        Body = 'Hjarrandi Breast.',
     },
     Ws_Acc = {
     },
     Aedge_Default = {
-        Ammo = 'Knobkierrie',
-        Head = { Name = 'Valorous Mask', Augment = { [1] = 'Attack+16', [2] = 'Weapon skill damage +10%', [3] = 'Accuracy+16', [4] = 'Pet: Mag. Acc.+1', [5] = 'Pet: STR+4' } },
-        --Head = 'Nyame Helm',
-        Neck = 'Baetyl Pendant',
-        Ear1 = 'Friomisi Earring',
-        Ear2 = 'Crematio Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Shiva Ring +1',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Cichol\'s Mantle', Augment = { [1] = 'STR+20', [2] = 'Weapon skill damage +10%', [3] = 'Attack+20', [4] = 'Accuracy+20' } },
-        Waist = 'Eschan Stone',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
     },
     Aedge_Hybrid = {
     },
     Aedge_Acc = {
     },
     Savage_Default = {
-        Ammo = 'Knobkierrie',
-        Head = { Name = 'Valorous Mask', Augment = { [1] = 'Attack+16', [2] = 'Weapon skill damage +10%', [3] = 'Accuracy+16', [4] = 'Pet: Mag. Acc.+1', [5] = 'Pet: STR+4' } },
-        Neck = 'War. Beads +1',
-        Ear1 = 'Thrud Earring',
-        Ear2 = 'Schere Earring',
-        Body = 'Nyame Mail',--AF+3
-        Hands = 'Valorous Mitts',
-        Ring1 = 'Beithir Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Cichol\'s Mantle', Augment = { [1] = 'STR+20', [2] = 'Weapon skill damage +10%', [3] = 'Attack+20', [4] = 'Accuracy+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Sakpata\'s Cuisses',--Valorous
-        Feet = 'Sulev. Leggings +2',
     },
     Savage_Hybrid = {
     },
     Savage_Acc = {
     },
     Impulse_Default = {
-        Ammo = 'Knobkierrie',
-        Head = { Name = 'Valorous Mask', Augment = { [1] = 'Attack+16', [2] = 'Weapon skill damage +10%', [3] = 'Accuracy+16', [4] = 'Pet: Mag. Acc.+1', [5] = 'Pet: STR+4' } },
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Thrud Earring',
-        Ear2 = 'Schere Earring',
-        Body = 'Nyame Mail',--AF+3
-        Hands = 'Valorous Mitts',
-        Ring1 = 'Beithir Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Cichol\'s Mantle', Augment = { [1] = 'STR+20', [2] = 'Weapon skill damage +10%', [3] = 'Attack+20', [4] = 'Accuracy+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Sakpata\'s Cuisses',--Valorous
-        Feet = 'Sulev. Leggings +2',
     },
     Impulse_Hybrid = {
     },
@@ -234,51 +130,48 @@ local sets = {
         Ammo = 'Thr. Tomahawk',
 	},
     Warcry = {
-        Head = 'Agoge Mask +1',
 	},
     Aggressor = {
-        Head = 'Pumm. Mask +1',
-        Body = 'Agoge Lorica +1',
 	},
     Defender = {
-        Hands = 'Agoge Mufflers +1',
 	},
     Berserk = {
-        Body = 'Pumm. Lorica +1',
-        Feet = 'Agoge Calligae +1',
 	},
     BloodRage = {
-        Body = 'Boii Lorica +1',
 	},
 
     TH = {--/th will force this set to equip for 10 seconds
-        Ammo = 'Per. Lucky Egg',
-		Waist = 'Chaac Belt',
 	},
     Movement = {
-        Feet = 'Hermes\' Sandals',
 	},
 };
 profile.Sets = sets;
 
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
+
 profile.Packer = {
-    {Name = 'Thr. Tomahawk', Quantity = 'all'},
-    {Name = 'Red Curry Bun', Quantity = 'all'},
+    'Jack-o\'-Lantern',
+	'Chariot Band',
+    --{Name = 'Thr. Tomahawk', Quantity = 'all'},
+    --{Name = 'Red Curry Bun', Quantity = 'all'},
 };
 
 profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
-
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 3');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 10');
+	gckeybinds.SetKeybinds();
 
     gcinclude.settings.RegenGearHPP = 65;
     gcinclude.settings.RefreshGearMPP = 40;
+	
 end
 
 profile.OnUnload = function()
     gcinclude.Unload();
+	gckeybinds.ClearKeybinds();
+	
 end
 
 profile.HandleCommand = function(args)
@@ -286,9 +179,17 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gFunc.EquipSet(sets.Idle);
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+
+	gFunc.EquipSet(sets.Idle_Default);
 	
 	local player = gData.GetPlayer();
+	
+    if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
     if (player.Status == 'Engaged') then
         gFunc.EquipSet(sets.Tp_Default)
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then
@@ -374,7 +275,7 @@ profile.HandleWeaponskill = function()
         gFunc.EquipSet(sets.Ws_Default)
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then
         gFunc.EquipSet('Ws_' .. gcdisplay.GetCycle('MeleeSet')) end
-        
+        if (gcdisplay.GetCycle('MeleeSet') == 'Default') then gcinclude.DoGorgets() end;
         if string.match(ws.Name, 'Aeolian Edge') then
             gFunc.EquipSet(sets.Aedge_Default)
             if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then

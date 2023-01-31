@@ -1,124 +1,61 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
 
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
 
 local sets = {
-    Idle = {
-        Head = 'Malignance Chapeau',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Gleti\'s Cuirass',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Moonbeam Ring',
-        Ring2 = 'Chirich Ring +1',
-        Back = 'Solemnity Cape',
-        Waist = 'Flume Belt +1',
-        Legs = 'Gleti\'s Breeches',
-        Feet = 'Gleti\'s Boots',
-    },
-    Resting = {},
+    Idle_Default_Priority = {
+	},
+    Resting_Priority = {
+	},
     Idle_Regen = {
-        Head = 'Meghanada Visor +2',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Hands = 'Meg. Gloves +2',
-        Ring2 = 'Chirich Ring +1',
-        Feet = 'Meg. Jam. +2',
-    },
-    Idle_Refresh = {},
+	},
+    Idle_Refresh = {
+	},
+	Idle_Defense = {
+	},
     Town = {
-        Main = 'Tauret',
-        Sub = 'Shijo',
-        Ammo = 'Coiste Bodhar',
+
     },
 
     Dt = {
-        Head = 'Nyame Helm',
-        Neck ='Bathy Choker +1',
-        Ear1 = 'Odnowa Earring +1',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Moonbeam Ring',
-        Ring2 = 'Gelatinous Ring +1',
-        Back = { Name = 'Toutatis\'s Cape', Augment = { [1] = 'Damage taken-5%', [2] = 'Accuracy+30', [3] = 'Attack+20', [4] = '"Store TP"+10', [5] = 'DEX+20' } },
-        Waist = 'Sailfi Belt +1',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
+
     },
 
-    Tp_Default = {
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = 'Anu Torque',
-        Ear1 = 'Sherida Earring',
-        Ear2 = 'Telos Earring',
-        Body = { Name = 'Plunderer\'s Vest +3', AugTrial=5477 },
-        Hands = { Name = 'Adhemar Wrist. +1', AugPath='B' },
-        Ring1 = 'Gere Ring',
-        Ring2 = 'Epona\'s Ring',
-        Back = { Name = 'Toutatis\'s Cape', Augment = { [1] = 'Damage taken-5%', [2] = 'Accuracy+30', [3] = 'Attack+20', [4] = '"Store TP"+10', [5] = 'DEX+20' } },
-        Waist = { Name = 'Sailfi Belt +1', AugPath='A' },
-        Legs = 'Samnuha Tights',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+20', [2] = 'Attack+6', [3] = 'AGI+1', [4] = '"Triple Atk."+3' } },
+    Tp_Default_Priority = {
     },
     Tp_Hybrid = {
-        Head = 'Malignance Chapeau',
-        Body = 'Gleti\'s Cuirass',
-        Hands = 'Malignance Gloves',
-        Legs = 'Gleti\'s Breeches',
-        Feet = 'Gleti\'s Boots',
+
     },
     Tp_Acc = {
-        Head = 'Malignance Chapeau',
-        Neck = 'Sanctity Necklace',
-        Ear1 = 'Mache Earring +1',
-        Body = 'Gleti\'s Cuirass',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Cacoethic Ring +1',
-        Ring2 = 'Chirich Ring +1',
-        Legs = 'Gleti\'s Breeches',
-        Feet = 'Gleti\'s Boots',
+
     },
 
 
     Precast = {
-        Head = 'Haruspex Hat',
-        Neck = 'Baetyl Pendant',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Taeon Tabard',
-        Hands = 'Leyline Gloves',
-        Ring1 = 'Prolix Ring',
-        Legs = 'Enif Cosciales',
+
     },
 
     Preshot = {
     },
     Midshot = {
-        Head = 'Malignance Chapeau',
-        Neck = 'Iskur Gorget',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Crep. Earring',
-        Body = 'Mummu Jacket +2',
-        Hands = 'Plun. Armlets +3',
-        Ring2 = 'Dingir Ring',
-        Waist = 'Eschan Stone',
+
     },
 
     Ws_Default = {
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Odr Earring',
-        Ear2 = 'Mache Earring +1',
-        Body = { Name = 'Plunderer\'s Vest +3', AugTrial=5477 },
-        Hands = 'Meg. Gloves +2',
-        Ring1 = 'Beithir Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Toutatis\'s Cape', Augment = { [1] = 'Accuracy+20', [2] = 'Weapon skill damage +10%', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Gleti\'s Breeches',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+30', [2] = 'Weapon skill damage +8%', [3] = 'Attack+6', [4] = 'Mag. Acc.+2' } },
+
     },
     Ws_Default_SA = {
     },
@@ -127,10 +64,7 @@ local sets = {
     Ws_Default_SATA = {
     },
     Ws_Hybrid = {
-        Head = 'Nyame Helm',
-        Body = 'Gleti\'s Cuirass',
-        Legs = 'Gleti\'s Breeches',
-        Feet = 'Gleti\'s Boots',
+
     },
     Ws_Hybrid_SA = {},
     Ws_Hybrid_TA = {},
@@ -142,18 +76,7 @@ local sets = {
     Ws_Acc_SATA = {},
 
     Evis_Default = {
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Odr Earring',
-        Ear2 = 'Mache Earring +1',
-        Body = { Name = 'Plunderer\'s Vest +3', AugTrial=5477 },
-        Hands = 'Meg. Gloves +2',
-        Ring1 = 'Beithir Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Toutatis\'s Cape', Augment = { [1] = 'Accuracy+20', [2] = 'Weapon skill damage +10%', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = 'Fotia Belt',
-        Legs = 'Gleti\'s Breeches',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+30', [2] = 'Weapon skill damage +8%', [3] = 'Attack+6', [4] = 'Mag. Acc.+2' } },
+
     },
     Evis_Default_SA = {
     },
@@ -184,42 +107,35 @@ local sets = {
     
     },
     TH = {
-        Hands = 'Plun. Armlets +3',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Potency of "Cure" effect received+5%', [2] = 'Mag. Acc.+19', [3] = 'Accuracy+21', [4] = '"Mag. Atk. Bns."+19', [5] = '"Treasure Hunter"+2' } },
+
     },
     Flee = {
-        Feet = 'Pill. Poulaines +2',
+
     },
     Movement = {
-        Feet = 'Pill. Poulaines +2',
+
 	},
 };
 profile.Sets = sets;
 
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
+
 profile.Packer = {
-    'Odious Blood',
-    'Odious Pen',
-    'Odious Skull',
-    'Odious Horn',
-    {Name = 'Forgotten Hope', Quantity = 'all'},
-    {Name = 'Frgtn. Thought', Quantity = 'all'},
-    'Shrouded Bijou',
-    {Name = 'T. Whiteshell', Quantity = 'all'},
-    {Name = 'O. Bronzepiece', Quantity = 'all'},
-    {Name = '1 Byne Bill', Quantity = 'all'},
+    'Jack-o\'-Lantern',
+	'Chariot Band',
 };
 
 profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
-
-    --[[ Set you job macro defaults here]]
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 2');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 1');
+	
 end
 
 profile.OnUnload = function()
     gcinclude.Unload();
+	
 end
 
 profile.HandleCommand = function(args)
@@ -227,11 +143,20 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gFunc.EquipSet(sets.Idle);
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+	
     local sa = gData.GetBuffCount('Sneak Attack');
     local ta = gData.GetBuffCount('Trick Attack');
 	
+	gFunc.EquipSet(sets.Idle_Default);
+	
 	local player = gData.GetPlayer();
+	
+    if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
     if (player.Status == 'Engaged') then
         gFunc.EquipSet(sets.Tp_Default)
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then
@@ -303,6 +228,7 @@ profile.HandleWeaponskill = function()
         gFunc.EquipSet(sets.Ws_Default)
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then
         gFunc.EquipSet('Ws_' .. gcdisplay.GetCycle('MeleeSet')) end
+		if (gcdisplay.GetCycle('MeleeSet') == 'Default') then gcinclude.DoGorgets() end;
         if (sa == 1) and (ta == 1) then
             gFunc.EquipSet('Ws_' .. gcdisplay.GetCycle('MeleeSet') .. '_SATA');
         elseif (sa == 1) then
