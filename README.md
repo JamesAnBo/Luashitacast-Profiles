@@ -1,4 +1,5 @@
-Edits by Aesk:
+######Edits by Aesk:
+```
   *Please note I have no idea what I'm doing and things may break (they're working for me so far)*
 - Added a seperate lua for universal keybinds. (see common\gckeybinds.lua)
 - Uses EvaluateLevel to prioritize gear based on current level. This is useful for level sync.
@@ -7,6 +8,7 @@ Edits by Aesk:
 - Added /helmset to toggle HELM (field) gear. (default CTRL+F11)
 - Added /xpring to toggle the specified xp ring. (see settings in common\gcinclude.lua)
 - Added elemental gorget changing for weaponskills.
+```
 
 # Luashitacast-Profiles
 These are my luashitacast profiles for FFXI Ashita v4, all jobs available, built for current retail. Keep in mind I made these for myself and I am simply sharing them for others to have at least a good starting off point if they want since Luashitacast and Ashita v4 in general is so new and there is not a widely available library of different profiles yet.
