@@ -1,43 +1,33 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
 
 local sets = {
-    Idle = {
-        Main = 'Naegling',
-        Range = 'Holliday',
-        Ammo = 'Decimating Bullet',
-        Head = 'Malignance Chapeau',
-        Neck = 'Loricate Torque +1',
-        Ear1 = 'Eabani Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Defending Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = 'Solemnity Cape',
-        Waist = 'Flume Belt +1',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
-    },
+    Idle_Default_Priority = {
+	},
+    Resting_Priority = {
+	},
+    Idle_Regen = {
+	},
+    Idle_Refresh = {
+	},
+	Idle_Defense = {
+	},
     Idle_TPgun = {
         Main = 'Naegling',
         Range = 'Anarchy +2',
-    },
-    Resting = {},
-    Idle_Regen = {
-        Head = 'Meghanada Visor +2',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Body = 'Meg. Cuirie +2',
-        Hands = 'Meg. Gloves +2',
-        Ring2 = 'Chirich Ring +1',
-        Legs = 'Meg. Chausses +2',
-        Feet = 'Meg. Jam. +2',
-    },
-    Idle_Refresh = {
-        Head = 'Rawhide Mask',
-        Ring1 = 'Stikini Ring +1',
     },
     Town = {
         Main = 'Naegling',
@@ -376,6 +366,10 @@ local sets = {
 };
 profile.Sets = sets;
 
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
+
 profile.Packer = {
     {Name = 'Decimating Bullet', Quantity = 'all'},
     {Name = 'Dec. Bul. Pouch', Quantity = 'all'},
@@ -387,8 +381,6 @@ profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
 
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 10');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 10');
 
     gcinclude.settings.RefreshGearMPP = 50;
     gcinclude.CORmsg = true; -- set this to false if you do not want to see lucky/unlucky # messages, can also do /cormsg in game to change on the fly
@@ -403,12 +395,19 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gFunc.EquipSet(sets.Idle);
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+
+    gFunc.EquipSet(sets.Idle_Default);
     if gcdisplay.GetToggle('TPgun') == true then
         gFunc.EquipSet(sets.Idle_TPgun);
     end
 	
 	local player = gData.GetPlayer();
+	if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
     if (player.Status == 'Engaged') then
         gFunc.EquipSet(sets.Tp_Default)
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then

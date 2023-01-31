@@ -1,24 +1,31 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
 
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
 
 local sets = {
-    Idle = {
-        Main = 'Sakpata\'s Fists',
-        Head = 'Mpaca\'s Cap',
-        Neck = 'Empath Necklace',
-        Ear1 = 'Odnowa Earring +1',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Mpaca\'s Doublet',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Defending Ring',
-        Ring2 = 'Gelatinous Ring +1',
-        Back = { Name = 'Visucius\'s Mantle', Augment = { [1] = 'Pet: R.Acc.+20', [2] = 'Pet: R.Atk.+20', [3] = 'Pet: Haste+10', [4] = 'Accuracy+20', [5] = 'Attack+20', [6] = 'Pet: Acc.+20', [7] = 'Pet: Atk.+20' } },
-        Waist = 'Gishdubar Sash',
-        Legs = 'Mpaca\'s Hose',
-        Feet = 'Mpaca\'s Boots',
-    },
+    Idle_Default_Priority = {
+	},
+    Resting_Priority = {
+	},
+    Idle_Regen = {
+	},
+    Idle_Refresh = {
+	},
+	Idle_Defense = {
+	},
     Idle_Pet = {
         Main = 'Sakpata\'s Fists',
         Head = 'Rawhide Mask',
@@ -33,19 +40,6 @@ local sets = {
         Waist = 'Isa Belt',
         Legs = 'Taeon Tights',
         Feet = 'Mpaca\'s Boots',
-    },
-	Resting = {},
-    Idle_Regen = {
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Hands = 'Rao Kote',
-        Ring2 = 'Chirich Ring +1',
-    },
-    Idle_Refresh = {
-        Head = 'Rawhide Mask',
-        Ring2 = 'Stikini Ring +1',
-        Waist = 'Fucho-no-Obi',
-        Legs = 'Assid. Pants +1',
     },
 	Town = {
         Main = 'Sakpata\'s Fists',
@@ -306,6 +300,10 @@ local sets = {
 };
 profile.Sets = sets;
 
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
+
 profile.Packer = {
     {Name = 'Automat. Oil +3', Quantity = 'all'},
     {Name = 'Bean Daifuku', Quantity = 'all'},
@@ -314,10 +312,6 @@ profile.Packer = {
 profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
-
-    --[[ Set you job macro defaults here]]
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 9');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 1');
 
     gcinclude.settings.RefreshGearMPP = 30;
 end
@@ -331,18 +325,26 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+
     local player = gData.GetPlayer();
     local pet = gData.GetPet();
     local OD = gData.GetBuffCount('Overdrive');
 	
-    gFunc.EquipSet(sets.Idle);
+    gFunc.EquipSet(sets.Idle_Default);
     if (pet ~= nil) then
         gFunc.EquipSet(sets.Idle_Pet);
     end
 	
+	
     if (pet ~= nil and pet.Status == 'Engaged') then
         gFunc.EquipSet('Pet_Only_Tp_' .. gcdisplay.GetCycle('MeleeSet'));
         gFunc.EquipSet(gcdisplay.GetCycle('PupMode'));
+		if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
         if (player.Status == 'Engaged') then
             gFunc.EquipSet('Tp_' .. gcdisplay.GetCycle('MeleeSet')) end
 		if (gcdisplay.GetToggle('TH') == true) then gFunc.EquipSet(sets.TH) end
