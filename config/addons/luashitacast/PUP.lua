@@ -336,6 +336,8 @@ profile.HandleDefault = function()
     local OD = gData.GetBuffCount('Overdrive');
 	
     gFunc.EquipSet(sets.Idle_Default);
+    if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
+	
     if (pet ~= nil) then
         gFunc.EquipSet(sets.Idle_Pet);
     end
@@ -344,7 +346,6 @@ profile.HandleDefault = function()
     if (pet ~= nil and pet.Status == 'Engaged') then
         gFunc.EquipSet('Pet_Only_Tp_' .. gcdisplay.GetCycle('MeleeSet'));
         gFunc.EquipSet(gcdisplay.GetCycle('PupMode'));
-		if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
         if (player.Status == 'Engaged') then
             gFunc.EquipSet('Tp_' .. gcdisplay.GetCycle('MeleeSet')) end
 		if (gcdisplay.GetToggle('TH') == true) then gFunc.EquipSet(sets.TH) end
