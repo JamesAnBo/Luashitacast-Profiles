@@ -16,7 +16,7 @@ gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
 
 local sets = {
     Idle_Default_Priority = {
-	    Main = 'Blessed Hammer',
+	Main = 'Blessed Hammer',
         Sub = 'Tropical Shield',
         Range = 'Bamboo Fish. Rod',
         Ammo = 'Lugworm',
@@ -49,8 +49,6 @@ local sets = {
     Tp_Default_Priority = {
         Main = 'Blessed Hammer',
         Sub = 'Tropical Shield',
-        Range = 'Bamboo Fish. Rod',
-        Ammo = 'Lugworm',
         Head = 'Brass Hairpin',
         Neck = 'Justice Badge',
         Ear1 = 'Beetle Earring +1',
