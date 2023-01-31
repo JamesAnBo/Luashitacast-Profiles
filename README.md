@@ -8,6 +8,8 @@
 - Added /helmset to toggle HELM (field) gear. (default CTRL+F11)
 - Added /xpring to toggle the specified xp ring. (see settings in common\gcinclude.lua)
 - Added elemental gorget changing for weaponskills.
+
+- Removed the auto setting macro books. (I use the [Macromaster](https://github.com/bangplaysgames/MacroMaster---Ashitav4) addon)
 ```
 
 # Luashitacast-Profiles
