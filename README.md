@@ -1,4 +1,4 @@
-######Edits by Aesk:
+###Edits by Aesk:
 ```
   *Please note I have no idea what I'm doing and things may break (they're working for me so far)*
 - Added a seperate lua for universal keybinds. (see common\gckeybinds.lua)
