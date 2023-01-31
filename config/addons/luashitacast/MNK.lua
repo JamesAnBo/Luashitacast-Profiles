@@ -1,114 +1,53 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
 
 local sets = {
-    Idle = {
-        Ammo = 'Staunch Tathlum',
-        Head = 'Malignance Chapeau',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Eabani Earring',
-        Body = 'Hiza. Haramaki +2',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Defending Ring',
-        Ring2 = 'Chirich Ring +1',
-        Back = 'Solemnity Cape',
-        Waist = 'Moonbow Belt',
-        Legs = 'Mummu Kecks +2',
-        Feet = 'Mpaca\'s Boots',
-    },
-    Resting = {},
+    Idle_Default_Priority = {
+	},
+    Resting_Priority = {
+	},
     Idle_Regen = {
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Body = 'Hiza. Haramaki +2',
-        Hands = 'Rao Kote',
-        Ring2 = 'Chirich Ring +1',
-    },
-    Idle_Refresh = {},
+	},
+    Idle_Refresh = {
+	},
+	Idle_Defense = {
+	},
     Town = {
-        Main = 'Sakpata\'s Fists',
-        Ammo = 'Staunch Tathlum',
-        Body = 'Malignance Tabard',
-        Legs = 'Mpaca\'s Hose',
     },
 
     Dt = {
-        Ammo = 'Staunch Tathlum',
-        Head = 'Nyame Helm',
-        Neck = { Name = 'Loricate Torque +1', AugPath='A' },
-        Ear1 = { Name = 'Odnowa Earring +1', AugPath='A' },
-        Ear2 = 'Etiolation Earring',
-        Body = 'Malignance Tabard',
-        Hands = 'Nyame Gauntlets',
-        Ring1 = 'Defending Ring',
-        Ring2 = { Name = 'Gelatinous Ring +1', AugPath='A' },
-        Waist = 'Flume Belt +1',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
     },
 
-    Tp_Default = {
-        Ammo = 'Coiste Bodhar',
-        Head = { Name = 'Adhemar Bonnet +1', AugPath='B' },
-        Neck = 'Anu Torque',
-        Ear1 = 'Sherida Earring',
-        Ear2 = 'Telos Earring',
-        Body = 'Malignance Tabard',
-        Hands = { Name = 'Adhemar Wrist. +1', AugPath='B' },
-        Ring1 = 'Niqmaddu Ring',
-        Ring2 = 'Gere Ring',
-        Back = { Name = 'Segomo\'s Mantle', Augment = { [1] = 'Accuracy+20', [2] = '"Dbl.Atk."+10', [3] = 'Attack+20', [4] = 'DEX+20' } },
-        Waist = 'Moonbow Belt',
-        Legs = { Name = 'Tatena. Haidate +1', AugPath='A' },
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+20', [2] = 'Attack+6', [3] = 'AGI+1', [4] = '"Triple Atk."+3' } },
+    Tp_Default_Priority = {
     },
     Tp_Hybrid = {
-        Head = 'Mpaca\'s Cap',
-        Neck = 'Sanctity Necklace',
-        Body = 'Mpaca\'s Doublet',
-        Hands = 'Mpaca\'s Gloves',
-        Legs = 'Mpaca\'s Hose',
-        Feet = 'Mpaca\'s Boots',
     },
     Tp_Acc = {
-        Ear1 = 'Mache Earring +1',
-        Hands = 'Tatena. Gote +1',
-        Ring1 = 'Cacoethic Ring +1',
-        Ring2 = 'Chirich Ring +1',
-        Feet = 'Tatena. Sune. +1',
     },
 
 
     Precast = {
-        Ammo = 'Staunch Tathlum',
-        Neck = 'Baetyl Pendant',
-        Ear1 = 'Etiolation Earring',
-        Ring2 = 'Prolix Ring',
     },
 
     Preshot = {
     },
     Midshot = {
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Crep. Earring',
     },
 
     Ws_Default = {
-        Ammo = 'Knobkierrie',
-        Head = 'Mpaca\'s Cap',
-        Neck = 'Fotia Gorget',
-        Ear1 = 'Telos Earring',
-        Ear2 = 'Odr Earring',
-        Body = 'Mummu Jacket +2',
-        Hands = 'Malignance Gloves',
-        Ring1 = 'Beithir Ring',
-        Ring2 = 'Karieyh Ring +1',
-        Back = { Name = 'Segomo\'s Mantle', Augment = { [1] = 'STR+20', [2] = 'Weapon skill damage +10%', [3] = 'Attack+20', [4] = 'Accuracy+20' } },
-        Waist = 'Moonbow Belt',
-        Legs = 'Hiza. Hizayoroi +2',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Accuracy+30', [2] = 'Weapon skill damage +8%', [3] = 'Attack+6', [4] = 'Mag. Acc.+2' } },
     },
     Ws_Hybrid = {
     },
@@ -116,7 +55,6 @@ local sets = {
     },
 
     Victory_Default = {
-        Hands = 'Ryuo Tekko',
     },
     Victory_Hybrid = {},
     Victory_Acc = {},
@@ -127,19 +65,18 @@ local sets = {
     Shijin_Acc = {},
 
     Impetus = {
-        Body = 'Bhikku Cyclas +1',
     },
 
     TH = {--/th will force this set to equip for 10 seconds
-		Ammo = 'Per. Lucky Egg',
-		Waist = 'Chaac Belt',
-        Feet = { Name = 'Herculean Boots', Augment = { [1] = 'Potency of "Cure" effect received+5%', [2] = 'Mag. Acc.+19', [3] = 'Accuracy+21', [4] = '"Mag. Atk. Bns."+19', [5] = '"Treasure Hunter"+2' } },
 	},
     Movement = {
-        Feet = 'Herald\'s Gaiters',
 	},
 };
 profile.Sets = sets;
+
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
 
 profile.Packer = {
     --{Name = 'Chonofuda', Quantity = 'all'},
@@ -149,8 +86,6 @@ profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
 
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 4');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 10');
 end
 
 profile.OnUnload = function()
@@ -162,10 +97,18 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gFunc.EquipSet(sets.Idle);
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+	
+    gFunc.EquipSet(sets.Idle_Default);
     local impetus = gData.GetBuffCount('Impetus');
 	
-	local player = gData.GetPlayer();
+    local player = gData.GetPlayer();
+
+    if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
     
     if (player.Status == 'Engaged') then
         gFunc.EquipSet(sets.Tp_Default);

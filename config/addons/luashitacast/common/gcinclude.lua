@@ -46,8 +46,17 @@ gcinclude.sets = T{
         Feet = 'Nyame Sollerets',
     },
 	Fishing = { -- this set is meant as a default set for fishing, equip using /fishset
-		Range = 'Halcyon Rod',
-		Ring2 = 'Pelican Ring',
+		Range = 'Bamboo Fish. Rod',
+		Body = 'Fsh. Tunica',
+		Hands = 'Fsh. Gloves',
+		Legs = 'Fisherman\'s Hose',
+		Feet = 'Fisherman\'s Boots',
+    },
+	HELM = { -- this set is meant as a default set for HELM, equip using /helmset
+		Body = 'Field Tunica',
+		Hands = 'Field Gloves',
+		Legs = 'Field Hose',
+		Feet = 'Field Boots',
     },
 };
 gcinclude.settings = {
@@ -55,8 +64,8 @@ gcinclude.settings = {
 	You can also set any of these on a per job basis in the job file in the OnLoad function. See my COR job file to see how this is done
 	but as an example you can just put 'gcinclude.settings.RefreshGearMPP = 50;' in your job files OnLoad function to modify for that job only
 	]]
-	Messages = false; --set to true if you want chat log messages to appear on any /gc command used such as DT, TH, or KITE gear toggles, certain messages will always appear
-	AutoGear = true; --set to false if you dont want DT/Regen/Refresh/PetDT gear to come on automatically at the defined %'s here
+	Messages = true; --set to true if you want chat log messages to appear on any /gc command used such as DT, TH, or KITE gear toggles, certain messages will always appear
+	AutoGear = false; --set to false if you dont want DT/Regen/Refresh/PetDT gear to come on automatically at the defined %'s here
 	WScheck = true; --set to false if you dont want to use the WSdistance safety check
 	WSdistance = 4.3; --default max distance (yalms) to allow non-ranged WS to go off at if the above WScheck is true
 	RegenGearHPP = 60; -- set HPP to have your idle regen set to come on
@@ -65,6 +74,7 @@ gcinclude.settings = {
 	PetDTGearHPP = 50; -- set pet HPP to have your PetDT set to come on
 	MoonshadeTP = 2250; -- this is the TP amount you want to equip EAR2 with moonshade earring when you have less than this amount, set to 0 if you dont want to use at all
 	Tele_Ring = 'Dim. Ring (Dem)'; -- put your tele ring in here
+	Xp_Ring = 'Chariot Band'; -- put your xp ring in here
 };
 
 --[[
@@ -73,9 +83,9 @@ in each individual job lua file. Unless you know what you're doing then it is be
 ]]
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 
-gcinclude.AliasList = T{'gcmessages','wsdistance','dt','th','kite','meleeset','gcdrain','gcaspir','nukeset','burst','weapon','elecycle','helix','weather','nuke','death','fight','sir','tankset','proc','cj','pupmode','tpgun','cormsg','forcestring','siphon','warpring','telering','rrset','craftset','zeniset','fishset'};
+gcinclude.AliasList = T{'gcmessages','wsdistance','dt','th','kite','meleeset', 'idleset', 'disable', 'gcdrain','gcaspir','nukeset','burst','weapon','elecycle','helix','weather','nuke','death','fight','sir','tankset','proc','cj','pupmode','tpgun','cormsg','forcestring','siphon','warpring','telering', 'xpring', 'rrset','craftset','zeniset','fishset','helmset'};
 gcinclude.Towns = T{'Tavnazian Safehold','Al Zahbi','Aht Urhgan Whitegate','Nashmau','Southern San d\'Oria [S]','Bastok Markets [S]','Windurst Waters [S]','San d\'Oria-Jeuno Airship','Bastok-Jeuno Airship','Windurst-Jeuno Airship','Kazham-Jeuno Airship','Southern San d\'Oria','Northern San d\'Oria','Port San d\'Oria','Chateau d\'Oraguille','Bastok Mines','Bastok Markets','Port Bastok','Metalworks','Windurst Waters','Windurst Walls','Port Windurst','Windurst Woods','Heavens Tower','Ru\'Lude Gardens','Upper Jeuno','Lower Jeuno','Port Jeuno','Rabao','Selbina','Mhaura','Kazham','Norg','Mog Garden','Celennia Memorial Library','Western Adoulin','Eastern Adoulin'};
-gcinclude.LockingRings = T{'Echad Ring', 'Trizek Ring', 'Endorsement Ring', 'Capacity Ring', 'Warp Ring','Facility Ring','Dim. Ring (Dem)','Dim. Ring (Mea)','Dim. Ring (Holla)'};
+gcinclude.LockingRings = T{'Echad Ring', 'Trizek Ring', 'Endorsement Ring', 'Return Ring', 'Homing Ring', 'Warp Ring','Facility Ring','Dim. Ring (Dem)','Dim. Ring (Mea)','Dim. Ring (Holla)'};
 gcinclude.DistanceWS = T{'Flaming Arrow','Piercing Arrow','Dulling Arrow','Sidewinder','Blast Arrow','Arching Arrow','Empyreal Arrow','Refulgent Arrow','Apex Arrow','Namas Arrow','Jishnu\'s Randiance','Hot Shot','Split Shot','Sniper Shot','Slug Shot','Blast Shot','Heavy Shot','Detonator','Numbing Shot','Last Stand','Coronach','Wildfire','Trueflight','Leaden Salute','Myrkr','Dagan','Moonlight','Starlight'};
 gcinclude.BstPetAttack = T{'Foot Kick','Whirl Claws','Big Scissors','Tail Blow','Blockhead','Sensilla Blades','Tegmina Buffet','Lamb Chop','Sheep Charge','Pentapeck','Recoil Dive','Frogkick','Queasyshroom','Numbshroom','Shakeshroom','Nimble Snap','Cyclotail','Somersault','Tickling Tendrils','Sweeping Gouge','Grapple','Double Claw','Spinning Top','Suction','Tortoise Stomp','Power Attack','Rhino Attack','Razor Fang','Claw Cyclone','Crossthrash','Scythe Tail','Ripper Fang','Chomp Rush','Pecking Flurry','Sickle Slash','Mandibular Bite','Wing Slap','Beak Lunge','Head Butt','Wild Oats','Needle Shot','Disembowel','Extirpating Salvo','Mega Scissors','Back Heel','Hoof Volley','Fluid Toss','Fluid Spread'};
 gcinclude.BstPetMagicAttack = T{'Gloom Spray','Fireball','Acid Spray','Molting Plumage','Cursed Sphere','Nectarous Deluge','Charged Whisker','Nepenthic Plunge'};
@@ -98,6 +108,16 @@ gcinclude.Elements = T{'Thunder', 'Blizzard', 'Fire', 'Stone', 'Aero', 'Water', 
 gcinclude.HelixSpells = T{'Ionohelix', 'Cryohelix', 'Pyrohelix', 'Geohelix', 'Anemohelix', 'Hydrohelix', 'Luminohelix', 'Noctohelix'};
 gcinclude.StormSpells = T{'Thunderstorm', 'Hailstorm', 'Firestorm', 'Sandstorm', 'Windstorm', 'Rainstorm', 'Aurorastorm', 'Voidstorm'};
 gcinclude.NinNukes = T{'Katon: Ichi', 'Katon: Ni', 'Katon: San', 'Hyoton: Ichi', 'Hyoton: Ni', 'Hyoton: San', 'Huton: Ichi', 'Huton: Ni', 'Huton: San', 'Doton: Ichi', 'Doton: Ni', 'Doton: San', 'Raiton: Ichi', 'Raiton: Ni', 'Raiton: San', 'Suiton: Ichi', 'Suiton: Ni', 'Suiton: San'};
+--gcinclude.EleObis = T{'Karin Obi', 'Dorin Obi', 'Surin Obi', 'Furin Obi', 'Hyorin Obi', 'Rairin Obi', 'Korin Obi', 'Anrin Obi', 'Hachirin-no-Obi'};
+--gcinclude.EleGorgets = T{'Flame Gorget', 'Soil Gorget', 'Aqua Gorget', 'Breeze Gorget', 'Snow Gorget', 'Thunder Gorget', 'Light Gorget', 'Shadow Gorget', 'Fotia Gorget'};
+gcinclude.FlameGorget = T{'Arching Arrow', 'Ascetic\'s Fury', 'Asuran Fists', 'Atonement', 'Blade: Shun', 'Burning Blade', 'Decimation', 'Detonator', 'Drakesbane', 'Dulling Arrow', 'Empyreal Arrow', 'Final Heaven', 'Flaming Arrow', 'Full Swing', 'Garland of Bliss', 'Heavy Shot', 'Hexa Strike', 'Hot Shot', 'Insurgency', 'Knights of Round', 'Last Stand', 'Mandalic Stab', 'Mistral Axe', 'Metatron Torment', 'Realmrazer', 'Red Lotus Blade', 'Scourge', 'Shijin Spiral', 'Sniper Shot', 'Spinning Attack', 'Spinning Axe', 'Stringing Pummel', 'Tachi: Kagero', 'Tachi: Kasha', 'Upheaval', 'Wheeling Thrust'};
+gcinclude.SoilGorget = T{'Aeolian Edge', 'Asuran Fists', 'Avalanche Axe', 'Blade: Ei', 'Blade: Ku', 'Blade: Retsu', 'Blade: Ten', 'Calamity', 'Catastrophe', 'Crescent Moon', 'Dancing Edge', 'Entropy', 'Evisceration', 'Exenterator', 'Expiacion', 'Fast Blade', 'Hard Slash', 'Impulse Drive', 'Iron Tempest', 'King\'s Justice', 'Leaden Salute', 'Mercy Stroke', 'Nightmare Scythe', 'Omniscience', 'Primal Rend', 'Pyrrhic Kleos', 'Rampage', 'Requiescat', 'Resolution', 'Retribution', 'Savage Blade', 'Seraph Blade', 'Shattersoul', 'Shining Blade', 'Sickle Moon', 'Slice', 'Spinning Axe', 'Spinning Scythe', 'Spiral Hell', 'Stardiver', 'Stringing Pummel', 'Sturmwind', 'Swift Blade', 'Tachi: Enpi', 'Tachi: Jinpu', 'Tachi: Rana', 'Trueflight', 'Viper Bite', 'Vorpal Blade', 'Vorpal Scythe', 'Wasp Sting'};
+gcinclude.AquaGorget = T{'Atonement', 'Blade: Teki', 'Brainshaker', 'Circle Blade', 'Cross Reaper', 'Dark Harvest', 'Entropy', 'Quietus', 'Death Blossom', 'Decimation', 'Expiacion', 'Full Break', 'Garland of Bliss', 'Gate of Tartarus', 'Geirskogul', 'Ground Strike', 'Last Stand', 'Mordant Rime', 'Namas Arrow', 'Piercing Arrow', 'Pyrrhic Kleos', 'Rudra\'s Storm', 'Primal Rend', 'Raging Rush', 'Retribution', 'Ruinator', 'Shadow of Death', 'Shadowstitch', 'Shockwave', 'Shoulder Tackle', 'Sidewinder', 'Skullbreaker', 'Slug Shot', 'Smash Axe', 'Spinning Scythe', 'Spiral Hell', 'Split Shot', 'Starburst', 'Steel Cyclone', 'Sturmwind', 'Sunburst', 'Tachi: Gekko', 'Tachi: Koki', 'Vidohunir', 'Vorpal Thrust'};
+gcinclude.BreezeGorget = T{'Aeolian Edge', 'Backhand Blow', 'Black Halo', 'Blade: Jin', 'Blade: Kamu', 'Blade: Metsu', 'Blade: To', 'Camlann\'s Torment', 'Coronach', 'Cyclone', 'Dancing Edge', 'Death Blossom', 'Dragon Kick', 'Earth Crusher', 'Exenterator', 'Freezebite', 'Gale Axe', 'Ground Strike', 'Gust Slash', 'King\'s Justice', 'Mordant Rime', 'Raging Axe', 'Randgrith', 'Red Lotus Blade', 'Resolution', 'Ruinator', 'Savage Blade', 'Shark Bite', 'Shell Crusher', 'Sidewinder', 'Slug Shot', 'Spinning Slash', 'Steel Cyclone', 'Tachi: Jinpu', 'Tachi: Kaiten', 'Tachi: Shoha', 'Tachi: Yukikaze', 'Tornado Kick', 'Trueflight', 'True Strike', 'Victory Smite', 'Vidohunir'};
+gcinclude.SnowGorget = T{'Blade: To', 'Blast Arrow', 'Blast Shot', 'Cross Reaper', 'Death Blossom', 'Expiacion', 'Freezebite', 'Frostbite', 'Full Break', 'Gate of Tartarus', 'Geirskogul', 'Ground Strike', 'Guillotine', 'Quietus', 'Impulse Drive', 'Mordant Rime', 'Namas Arrow', 'Piercing Arrow', 'Pyrrhic Kleos', 'Rudra\'s Storm', 'Ruinator', 'Raging Rush', 'Shadow of Death', 'Shattersoul', 'Skullbreaker', 'Smash Axe', 'Spiral Hell', 'Steel Cyclone', 'Tachi: Gekko', 'Tachi: Hobaku', 'Tachi: Rana', 'Tachi: Yukikaze', 'Tornado Kick', 'Vidohunir'};
+gcinclude.ThunderGorget = T{'Aeolian Edge', 'Apex Arrow', 'Armor Break', 'Avalanche Axe', 'Black Halo', 'Blade: Chi', 'Blade: Jin', 'Blade: Kamu', 'Blade: Shun', 'Calamity', 'Camlann\'s Torment', 'Circle Blade', 'Combo', 'Cyclone', 'Death Blossom', 'Dragon Kick', 'Earth Crusher', 'Exenterator', 'Flat Blade', 'Full Swing', 'Ground Strike', 'Heavy Swing', 'Howling Fist', 'Judgment', 'King\'s Justice', 'Leg Sweep', 'Mordant Rime', 'Raging Axe', 'Raging Fists', 'Raiden Thrust', 'Realmrazer', 'Resolution', 'Rock Crusher', 'Savage Blade', 'Seraph Strike', 'Shark Bite', 'Shield Break', 'Shining Strike', 'Shoulder Tackle', 'Sickle Moon', 'Skewer', 'Spinning Attack', 'Spinning Axe', 'Spinning Slash', 'Tachi: Goten', 'Tachi: Koki', 'Tachi: Shoha', 'Thunder Thrust', 'Tornado Kick', 'Trueflight', 'True Strike', 'Victory Smite', 'Vidohunir', 'Vorpal Blade', 'Weapon Break'};
+gcinclude.LightGorget = T{'Apex Arrow', 'Arching Arrow', 'Ascetic\'s Fury', 'Atonement', 'Blade: Chi', 'Blade: Ku', 'Blade: Rin', 'Blade: Shun', 'Blast Arrow', 'Blast Shot', 'Camlann\'s Torment', 'Decimation', 'Detonator', 'Double Thrust', 'Drakesbane', 'Dulling Arrow', 'Empyreal Arrow', 'Evisceration', 'Final Heaven', 'Flaming Arrow', 'Garland of Bliss', 'Heavy Shot', 'Hexa Strike', 'Hot Shot', 'Howling Fist', 'Insurgency', 'Knights of Round', 'Leaden Salute', 'Last Stand', 'Mandalic Stab', 'Metatron Torment', 'Mistral Axe', 'Omniscience', 'Piercing Arrow', 'Power Slash', 'Realmrazer', 'Raiden Thrust', 'Scourge', 'Shijin Spiral', 'Sidewinder', 'Skewer', 'Slug Shot', 'Sniper Shot', 'Split Shot', 'Stardiver', 'Tachi: Enpi', 'Tachi: Goten', 'Tachi: Kasha', 'Thunder Thrust', 'Torcleaver', 'Victory Smite', 'Upheaval', 'Vorpal Scythe', 'Vorpal Thrust', 'Wheeling Thrust'};
+gcinclude.ShadowGorget = T{'Asuran Fists', 'Black Halo', 'Blade: Ei', 'Blade: Hi', 'Blade: Kamu', 'Blade: Ku', 'Blade: Ten', 'Catastrophe', 'Quietus', 'Entropy', 'Evisceration', 'Impulse Drive', 'Insurgency', 'Keen Edge', 'Leaden Salute', 'Mandalic Stab', 'Mercy Stroke', 'Requiescat', 'Rudra\'s Storm', 'Nightmare Scythe', 'Omniscience', 'One Inch Punch', 'Penta Thrust', 'Primal Rend', 'Retribution', 'Shattersoul', 'Starburst', 'Stardiver', 'Stringing Pummel', 'Sunburst', 'Swift Blade', 'Tachi: Kasha', 'Tachi: Rana', 'Tachi: Shoha', 'Upheaval'};
 gcinclude.Rolls = T{{'Fighter\'s Roll',5,9}, {'Monk\'s Roll',3,7}, {'Healer\'s Roll',3,7}, {'Corsair\'s Roll',5,9}, {'Ninja Roll',4,8},{'Hunter\'s Roll',4,8}, {'Chaos Roll',4,8}, {'Magus\'s Roll',2,6}, {'Drachen Roll',4,8}, {'Choral Roll',2,6},{'Beast Roll',4,8}, {'Samurai Roll',2,6}, {'Evoker\'s Roll',5,9}, {'Rogue\'s Roll',5,9}, {'Warlock\'s Roll',4,8},
 	{'Puppet Roll',3,7}, {'Gallant\'s Roll',3,7}, {'Wizard\'s Roll',5,9}, {'Dancer\'s Roll',3,7}, {'Scholar\'s Roll',2,6},{'Naturalist\'s Roll',3,7}, {'Runeist\'s Roll',4,8}, {'Bolter\'s Roll',3,9}, {'Caster\'s Roll',2,7}, {'Courser\'s Roll',3,9},{'Blitzer\'s Roll',4,9}, {'Tactician\'s Roll',5,8}, {'Allies\' Roll',3,10}, {'Miser\'s Roll',5,7},
 	{'Companion\'s Roll',2,10},{'Avenger\'s Roll',4,8},}; -- {name,lucky,unlucky}
@@ -105,7 +125,10 @@ gcinclude.RRSET = false;
 gcinclude.CraftSet = false;
 gcinclude.ZeniSet = false;
 gcinclude.FishSet = false;
+gcinclude.HELMSet = false;
 gcinclude.CORmsg = true;
+gcinclude.XpRing = false;
+gcinclude.Disable = false;
 
 function gcinclude.Message(toggle, status)
 	if toggle ~= nil and status ~= nil then
@@ -128,9 +151,11 @@ end
 function gcinclude.SetVariables()
 	local player = gData.GetPlayer();
 
+	gcdisplay.CreateToggle('Disabled', false);
 	gcdisplay.CreateToggle('DTset', false);
 	gcdisplay.CreateToggle('Kite', false);
 	gcdisplay.CreateToggle('TH', false);
+	gcdisplay.CreateCycle('IdleSet', {[1] = 'Default', [2] = 'Defense', [3] = 'Refresh', [4] = 'Regen'});
 	gcdisplay.CreateCycle('MeleeSet', {[1] = 'Default', [2] = 'Hybrid', [3] = 'Acc'});
 	if (player.MainJob == 'RDM') or (player.MainJob == 'BLM') or (player.MainJob == 'SCH') or (player.MainJob == 'GEO') then
 		gcdisplay.CreateToggle('Burst', true);
@@ -200,6 +225,10 @@ function gcinclude.SetCommands(args)
 		gcdisplay.AdvanceCycle('MeleeSet');
 		toggle = 'Melee Set';
 		status = gcdisplay.GetCycle('MeleeSet');
+    elseif (args[1] == 'idleset') then
+		gcdisplay.AdvanceCycle('IdleSet');
+		toggle = 'Idle Set';
+		status = gcdisplay.GetCycle('IdleSet');
 	elseif (args[1] == 'kite') then
 		gcdisplay.AdvanceToggle('Kite');
 		toggle = 'Kite Set';
@@ -216,6 +245,10 @@ function gcinclude.SetCommands(args)
 		gcinclude.DoWarpRing();
 	elseif (args[1] == 'telering') then
 		gcinclude.DoTeleRing();
+	elseif (args[1] == 'xpring') then
+		gcinclude.XpRing = not gcinclude.XpRing;
+		toggle = 'XP Ring';
+		status = gcinclude.XpRing;
 	elseif (args[1] == 'rrset') then
 		gcinclude.RRSET = not gcinclude.RRSET;
 		toggle = 'Reraise Set';
@@ -232,7 +265,25 @@ function gcinclude.SetCommands(args)
 		gcinclude.FishSet = not gcinclude.FishSet;
 		toggle = 'Fishing Set';
 		status = gcinclude.FishSet;
+	elseif (args[1] == 'helmset') then
+		gcinclude.HELMSet = not gcinclude.HELMSet;
+		toggle = 'HELM Set';
+		status = gcinclude.HELMSet;
     end
+	if (args[1] == 'disable') then
+		if (gcdisplay.GetToggle('Disabled') == false) then 
+			AshitaCore:GetChatManager():QueueCommand(-1, '/lac disable all')
+			gcdisplay.AdvanceToggle('Disabled');
+			toggle = 'Disable Gear Swap';
+			status = gcdisplay.GetToggle('Disabled');
+		else
+			AshitaCore:GetChatManager():QueueCommand(-1, '/lac enable all')
+			gcdisplay.AdvanceToggle('Disabled');
+			toggle = 'Disable Gear Swap';
+			status = gcdisplay.GetToggle('Disabled');
+		end
+		
+	end
 	if (player.MainJob == 'RDM') or (player.MainJob == 'BLM') or (player.MainJob == 'SCH') or (player.MainJob == 'GEO') then
 		if (args[1] == 'nukeset') then
 			gcdisplay.AdvanceCycle('NukeSet');
@@ -282,7 +333,7 @@ function gcinclude.SetCommands(args)
 				AshitaCore:GetChatManager():QueueCommand(-1, '/lac enable Main');
 				AshitaCore:GetChatManager():QueueCommand(-1, '/lac enable Sub');
 				if (player.MainJob == 'RDM') or (player.MainJob == 'GEO') then AshitaCore:GetChatManager():QueueCommand(-1, '/lac enable Range') end
-				if (player.MainJob == 'GEO') or (player.MainJob == 'WHM') then AshitaCore:GetChatManager():QueueCommand(-1, '/lac disable Ammo') end
+				if (player.MainJob == 'GEO') or (player.MainJob == 'WHM') then AshitaCore:GetChatManager():QueueCommand(-1, '/lac enable Ammo') end
 				gcdisplay.AdvanceToggle('Fight');
 				toggle = 'Mage Weapon Lock';
 				status = gcdisplay.GetToggle('Fight');
@@ -638,6 +689,28 @@ function gcinclude.DoMoonshade()
 	if player.TP < gcinclude.settings.MoonshadeTP then gFunc.Equip('Ear2', 'Moonshade Earring') end
 end
 
+function gcinclude.DoGorgets()
+	local ws = gData.GetAction();
+	if gcinclude.FlameGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Flame Gorget');
+	elseif gcinclude.SoilGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Soil Gorget');
+	elseif gcinclude.AquaGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Aqua Gorget');
+	elseif gcinclude.BreezeGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Breeze Gorget');
+	elseif gcinclude.SnowGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Snow Gorget');
+	elseif gcinclude.ThunderGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Thunder Gorget');
+	elseif gcinclude.LightGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Light Gorget');
+	elseif gcinclude.ShadowGorget:contains(ws.Name) then gFunc.Equip('Neck', 'Shadow Gorget');
+	end
+end
+
+-- function gcinclude.DoObis ()
+	-- local spell = gData.GetAction();
+	-- if (spell.Element == weather.WeatherElement) or (spell.Element == weather.DayElement) then
+		-- if spell.Element == 'fire' then
+			-- gFunc.Equip('Waist', 'Hachirin-no-Obi');
+		-- end
+	-- end
+-- end
+
 function gcinclude.CheckCancels()--tossed Stoneskin in here too
 	local action = gData.GetAction();
 	local sneak = gData.GetBuffCount('Sneak');
@@ -675,22 +748,32 @@ function gcinclude.CheckDefault()
 	gcinclude.SetTownGear();
     gcinclude.CheckCommonDebuffs();
 	gcinclude.CheckLockingRings();
+	local rings = gData.GetEquipment();
+	
 	if (gcinclude.CraftSet == true) then gFunc.EquipSet(gcinclude.sets.Crafting) end
 	if (gcinclude.ZeniSet == true) then gFunc.EquipSet(gcinclude.sets.Zeni) end
 	if (gcinclude.FishSet == true) then gFunc.EquipSet(gcinclude.sets.Fishing) end
+	if (gcinclude.HELMSet == true) then gFunc.EquipSet(gcinclude.sets.HELM) end
 	if (gcinclude.RRSET == true) then gFunc.EquipSet(gcinclude.sets.Reraise) end
+	if (gcinclude.XpRing == true) then gFunc.Equip('ring1', gcinclude.settings.Xp_Ring) end
+
 	gcdisplay.Update();
 end
 
 function gcinclude.Unload()
 	gcinclude.ClearAlias();
 	gcdisplay.Unload();
+	gckeybinds.ClearKeybinds();
+
 end
 
 function gcinclude.Initialize()
 	gcdisplay.Initialize:once(2);
 	gcinclude.SetVariables:once(2);
 	gcinclude.SetAlias:once(2);
+	gckeybinds.SetKeybinds:once(2);
+	AshitaCore:GetChatManager():QueueCommand(-1, '/addon load skillchains');
+	
 end
 
 return gcinclude;

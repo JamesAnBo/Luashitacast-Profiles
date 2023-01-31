@@ -1,34 +1,30 @@
 local profile = {};
 gcdisplay = gFunc.LoadFile('common\\gcdisplay.lua');
 gcinclude = gFunc.LoadFile('common\\gcinclude.lua');
+gckeybinds = gFunc.LoadFile('common\\gckeybinds.lua');
+
+--[[
+	Sets with _Priority allow for level sync options. Gear will be equipped in the order listed if you are of the appropriate level.
+	
+	Example:
+	Tp_Default_Priority = {
+		Main = { 'Level 25 Weapon', 'Level 20 Weapon', 'Level 18 Weapon' },
+	},
+	
+	This will equip the level 25 weapon if you are level 25 or higher. If you level sync to 22, the level 20 weapon will be equipped and so on.
+]]--
 
 local sets = {
-    Idle = {
-        Ammo = 'Staunch Tathlum',
-        Head = 'Jumalik Helm',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Ear2 = 'Etiolation Earring',
-        Body = 'Nyame Mail',
-        Hands = 'Volte Moufles',
-        Ring1 = 'Stikini Ring +1',
-        Ring2 = 'Chirich Ring +1',
-        Back = 'Solemnity Cape',
-        Waist = 'Gishdubar Sash',
-        Legs = 'Nyame Flanchard',
-        Feet = 'Nyame Sollerets',
-    },
-    Resting = {},
+    Idle_Default_Priority = {
+	},
+    Resting_Priority = {
+	},
     Idle_Regen = {
-        Head = 'Crepuscular Helm',
-        Neck = 'Bathy Choker +1',
-        Ear1 = 'Infused Earring',
-        Ring2 = 'Chirich Ring +1',
-    },
+	},
     Idle_Refresh = {
-        Head = 'Jumalik Helm',
-        Ring1 = 'Stikini Ring +1',
-    },
+	},
+	Idle_Defense = {
+	},
     Town = {
         Main = 'Apocalypse',
         Sub = 'Utu Grip',
@@ -58,7 +54,7 @@ local sets = {
         Feet = 'Nyame Sollerets',
     },
 
-    Tp_Default = {
+    Tp_Default_Priority = {
         Ammo = { Name = 'Coiste Bodhar', AugPath='A' },
         Head = 'Flam. Zucchetto +2',
         Neck = 'Sanctity Necklace',--jse neck
@@ -240,6 +236,10 @@ local sets = {
 };
 profile.Sets = sets;
 
+local Settings = {
+	CurrentLevel = 0; --Leave this at 0
+};
+
 profile.Packer = {
     --{Name = 'Chonofuda', Quantity = 'all'},
 };
@@ -248,12 +248,11 @@ profile.OnLoad = function()
 	gSettings.AllowAddSet = true;
     gcinclude.Initialize();
 
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 7');
-    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 10');
 end
 
 profile.OnUnload = function()
     gcinclude.Unload();
+
 end
 
 profile.HandleCommand = function(args)
@@ -261,10 +260,18 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gFunc.EquipSet(sets.Idle);
+    local myLevel = AshitaCore:GetMemoryManager():GetPlayer():GetMainJobLevel();
+    if (myLevel ~= Settings.CurrentLevel) then
+        gFunc.EvaluateLevels(profile.Sets, myLevel);
+        Settings.CurrentLevel = myLevel;
+    end
+	
+    gFunc.EquipSet(sets.Idle_Default);
     local spikes = gData.GetBuffCount('Dread Spikes');
 	
 	local player = gData.GetPlayer();
+	
+	if (gcdisplay.GetCycle('IdleSet') ~= 'Default') then gFunc.EquipSet('Idle_' .. gcdisplay.GetCycle('IdleSet')) end;
     if (player.Status == 'Engaged') then
         gFunc.EquipSet(sets.Tp_Default)
         if (gcdisplay.GetCycle('MeleeSet') ~= 'Default') then
