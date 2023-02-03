@@ -102,6 +102,8 @@ function gckeybinds.SetKeybinds()
 end
 
 function gckeybinds.ClearKeybinds()
+	local player = gData.GetPlayer();
+	
 	AshitaCore:GetChatManager():QueueCommand(-1, '/unbind ^F1');
 	AshitaCore:GetChatManager():QueueCommand(-1, '/unbind ^F2');
 	AshitaCore:GetChatManager():QueueCommand(-1, '/unbind ^F3');
